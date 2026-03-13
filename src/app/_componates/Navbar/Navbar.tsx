@@ -1,5 +1,7 @@
 "use client";
 
+import { FaShoppingCart } from "react-icons/fa";
+import { FaHeart } from "react-icons/fa";
 import * as React from "react";
 import Link from "next/link";
 import {
@@ -52,7 +54,7 @@ const components: { title: string; href: string; description: string }[] = [
 
 export default function NavigationMenuDemo() {
   return (
-    <NavigationMenu className="bg-red-700 w-full max-w-none justify-between px-20">
+    <NavigationMenu className=" w-full max-w-none justify-between px-20 sticky top-0">
       <h6>frech cart</h6>
 
       <NavigationMenuList>
@@ -74,9 +76,33 @@ export default function NavigationMenuDemo() {
         </NavigationMenuItem>
 
         <NavigationMenuList className="hidden md:flex">
-          <NavigationMenuItem>icon1</NavigationMenuItem>
+          <NavigationMenuItem>
+            <NavigationMenuLink asChild>
+              <Link href="/">Home</Link>
+            </NavigationMenuLink>
+          </NavigationMenuItem>
 
-          <NavigationMenuItem>icon2</NavigationMenuItem>
+          <NavigationMenuItem>
+            <NavigationMenuLink asChild>
+              <Link href="/categories">Categories</Link>
+            </NavigationMenuLink>
+          </NavigationMenuItem>
+
+          <NavigationMenuItem>
+            <NavigationMenuLink asChild>
+              <Link href="/categories">Categories</Link>
+            </NavigationMenuLink>
+          </NavigationMenuItem>
+        </NavigationMenuList>
+
+        <NavigationMenuList className="hidden md:flex gap-2">
+          <NavigationMenuItem>
+            <FaHeart />
+          </NavigationMenuItem>
+
+          <NavigationMenuItem>
+            <FaShoppingCart />
+          </NavigationMenuItem>
 
           <NavigationMenuItem>
             <NavigationMenuLink asChild>
