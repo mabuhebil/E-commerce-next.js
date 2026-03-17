@@ -2,6 +2,7 @@ import React from "react";
 import { ProductProps } from "./Product.typs";
 import { CiStar } from "react-icons/ci";
 import { Button } from "-/components/ui/button";
+import AddToCartButton from "../AddToCartButton/AddToCartButton";
 
 export default function Product({ product }: ProductProps) {
   return (
@@ -32,7 +33,7 @@ export default function Product({ product }: ProductProps) {
           )}
         </h2>
 
-        <Button>+</Button>
+        <AddToCartButton />
       </div>
     </div>
   );
