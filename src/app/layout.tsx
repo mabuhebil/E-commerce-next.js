@@ -51,7 +51,7 @@ export default function RootLayout({
               <IoPersonAdd /> Sign in
             </Link>
             <Link href="/register" className="flex gap-2 items-center">
-              <IoPersonSharp /> Sign out
+              <IoPersonSharp /> Sign up
             </Link>
           </div>
         </div>
