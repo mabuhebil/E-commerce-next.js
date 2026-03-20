@@ -2,10 +2,44 @@
 import { Button } from "-/components/ui/button";
 import { Field, FieldError, FieldLabel } from "-/components/ui/field";
 import { Input } from "-/components/ui/input";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
+import * as zod from "zod";
+
+const registerSchema = zod
+  .object({
+    name: zod
+      .string("Name must be text")
+      .nonempty("name is required")
+      .min(3, " name must be at least 3 char")
+      .max(13, " name must be maxuim 13 char"),
+    email: zod.email("email is not in format").nonempty("email is requierd"),
+    password: zod
+      .string()
+      .nonempty()
+      .regex(
+        /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
+        "Minimum eight characters, at least one letter and one number:",
+      ),
+    rePassword: zod
+      .string()
+      .nonempty()
+      .regex(
+        /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
+        "Minimum eight characters, at least one letter and one number:",
+      ),
+  })
+  .refine(
+    (value) => {
+      return value.password === value.rePassword;
+    },
+    { error: "Password is not matched", path: ["password"] },
+  );
 
 export default function RegisterFrom() {
-  const { handleSubmit, control } = useForm();
+  const { handleSubmit, control } = useForm({
+    resolver: zodResolver(registerSchema),
+  });
 
   function submit(data) {
     console.log("dateRegister", data);
@@ -89,13 +123,11 @@ export default function RegisterFrom() {
       />
 
       <Controller
-        name="repassword"
+        name="rePassword"
         control={control}
         render={({ field, fieldState }) => (
           <Field data-invalid={fieldState.invalid}>
-            <FieldLabel htmlFor="repassword">
-                Password Confirmation
-            </FieldLabel>
+            <FieldLabel htmlFor="repassword">Password Confirmation</FieldLabel>
             <Input
               {...field}
               id="repassword"
