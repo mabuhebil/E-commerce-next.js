@@ -4,45 +4,39 @@ import { Field, FieldError, FieldLabel } from "-/components/ui/field";
 import { Input } from "-/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
-import * as zod from "zod";
-
-const registerSchema = zod
-  .object({
-    name: zod
-      .string("Name must be text")
-      .nonempty("name is required")
-      .min(3, " name must be at least 3 char")
-      .max(13, " name must be maxuim 13 char"),
-    email: zod.email("email is not in format").nonempty("email is requierd"),
-    password: zod
-      .string()
-      .nonempty()
-      .regex(
-        /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
-        "Minimum eight characters, at least one letter and one number:",
-      ),
-    rePassword: zod
-      .string()
-      .nonempty()
-      .regex(
-        /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
-        "Minimum eight characters, at least one letter and one number:",
-      ),
-  })
-  .refine(
-    (value) => {
-      return value.password === value.rePassword;
-    },
-    { error: "Password is not matched", path: ["password"] },
-  );
+import { registerSchema } from "./register.schema";
+import { RegisterSchemaObjectType } from "./registerSchemaObjectType";
 
 export default function RegisterFrom() {
-  const { handleSubmit, control } = useForm({
+  const { handleSubmit, control } = useForm<RegisterSchemaObjectType>({
     resolver: zodResolver(registerSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+      rePassword: "",
+      phone: "",
+    },
   });
 
-  function submit(data) {
+  async function submit(data: RegisterSchemaObjectType) {
     console.log("dateRegister", data);
+
+    try {
+      const res = await fetch(
+        "https://ecommerce.routemisr.com/api/v1/auth/signup",
+        {
+          method: "post",
+          body: JSON.stringify(data),
+          headers: { "content-type": "application/json" },
+        },
+      );
+      const finalRes = await res.json();
+
+      console.log("finalRes", finalRes);
+    } catch (error) {
+      console.log("error", error);
+    }
   }
 
   return (
