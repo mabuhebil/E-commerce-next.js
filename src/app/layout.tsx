@@ -7,6 +7,7 @@ import Link from "next/link";
 import { FaPhoneAlt } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { IoPersonAdd, IoPersonSharp } from "react-icons/io5";
+import { Toaster } from "sonner";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -56,6 +57,7 @@ export default function RootLayout({
           </div>
         </div>
         <Navbar />
+        <Toaster />
         {children}
         <Footer />
       </body>
