@@ -6,8 +6,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { registerSchema } from "./register.schema";
 import { RegisterSchemaObjectType } from "./registerSchemaObjectType";
+import { RegisterAction } from "./register.actions";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export default function RegisterFrom() {
+  const router = useRouter();
   const { handleSubmit, control } = useForm<RegisterSchemaObjectType>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
@@ -21,21 +25,21 @@ export default function RegisterFrom() {
 
   async function submit(data: RegisterSchemaObjectType) {
     console.log("dateRegister", data);
+    const IsRegisterSuccessfuly = await RegisterAction(data);
+    if (IsRegisterSuccessfuly) {
+      toast.success("register is successfuly", {
+        duration: 3000,
+        position: "top-right",
+      });
 
-    try {
-      const res = await fetch(
-        "https://ecommerce.routemisr.com/api/v1/auth/signup",
-        {
-          method: "post",
-          body: JSON.stringify(data),
-          headers: { "content-type": "application/json" },
-        },
-      );
-      const finalRes = await res.json();
-
-      console.log("finalRes", finalRes);
-    } catch (error) {
-      console.log("error", error);
+      setTimeout(() => {
+        router.push("/login");
+      }, 3000);
+    } else {
+      toast.error(" Account is aleardy exist", {
+        duration: 3000,
+        position: "top-right",
+      });
     }
   }
 
