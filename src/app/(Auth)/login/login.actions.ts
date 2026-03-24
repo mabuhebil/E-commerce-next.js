@@ -1,5 +1,6 @@
 "use server";
 
+import { cookies } from "next/headers";
 import { LoginSchemaObjectType } from "./loginSchemaObjectType";
 
 export async function LoginAction(data: LoginSchemaObjectType) {
@@ -12,9 +13,19 @@ export async function LoginAction(data: LoginSchemaObjectType) {
         headers: { "content-type": "application/json" },
       },
     );
-    console.log("login_data", data);
 
-    return res.ok;
+    const finalRes = await res.json();
+
+    if (res.ok) {
+      const cookie = await cookies();
+      cookie.set("tkn", finalRes.token, {
+        httpOnly: true,
+        maxAge: 60 * 60 * 24,
+        sameSite: "lax",
+      });
+      return true;
+    }
+    return false;
   } catch (error) {
     console.log("error", error);
   }
