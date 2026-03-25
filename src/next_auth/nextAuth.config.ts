@@ -30,8 +30,24 @@ export const nextAuthConfig: NextAuthOptions = {
         const finalRes = await res.json();
         console.log("next auth", finalRes);
 
+        if (res.ok) {
+          const { name, email } = finalRes.user;
+
+          return {
+            name,
+            email,
+            id: "",
+          };
+        }
+
         return null;
       },
     }),
   ],
+  jwt: {
+    maxAge: 60 * 60 * 24 * 3,
+  },
+  pages:{
+    signIn:'/login'
+  }
 };
