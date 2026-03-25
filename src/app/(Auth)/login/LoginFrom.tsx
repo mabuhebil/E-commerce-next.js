@@ -6,11 +6,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { LoginSchema } from "./login.schema";
 import { LoginSchemaObjectType } from "./loginSchemaObjectType";
-import { LoginAction } from "./login.actions";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 
-export default function RegisterFrom() {
+export default function LoginFrom() {
   const router = useRouter();
   const { handleSubmit, control } = useForm<LoginSchemaObjectType>({
     resolver: zodResolver(LoginSchema),
@@ -21,13 +21,14 @@ export default function RegisterFrom() {
   });
 
   async function submit(data: LoginSchemaObjectType) {
-    const IsLoginSuccessfuly = await LoginAction(data);
-    if (IsLoginSuccessfuly) {
+    // call authorize function
+    const res = await signIn("credentials", { redirect: false, ...data });
+
+    if (res?.ok) {
       toast.success("Login is successfuly", {
         duration: 3000,
         position: "top-right",
       });
-
       setTimeout(() => {
         router.push("/");
       }, 3000);
