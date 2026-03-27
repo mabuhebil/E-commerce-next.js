@@ -13,6 +13,7 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "-/components/ui/navigation-menu";
+import { useSession } from "next-auth/react";
 
 const components: { title: string; href: string; description: string }[] = [
   {
@@ -53,6 +54,10 @@ const components: { title: string; href: string; description: string }[] = [
 ];
 
 export default function NavigationMenuDemo() {
+  const session = useSession();
+  const userName = session.data?.user?.name;
+  const IsUserAuthenticated = session.status === "authenticated";
+
   return (
     <NavigationMenu className=" w-full max-w-none justify-between px-20 sticky top-0">
       <h6>frech cart</h6>
@@ -106,7 +111,11 @@ export default function NavigationMenuDemo() {
 
           <NavigationMenuItem>
             <NavigationMenuLink asChild>
-              <Link href="/login">Sign in</Link>
+              {IsUserAuthenticated ? (
+                <Link href="/profile">{userName}</Link>
+              ) : (
+                <Link href="/login">Sign in</Link>
+              )}
             </NavigationMenuLink>
           </NavigationMenuItem>
         </NavigationMenuList>
