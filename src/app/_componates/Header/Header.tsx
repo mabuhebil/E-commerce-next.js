@@ -1,3 +1,4 @@
+import { nextAuthConfig } from "-/next_auth/nextAuth.config";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
 import React from "react";
@@ -9,6 +10,8 @@ export default async function Header() {
   const res = await getServerSession();
   const userName = res?.user?.name;
   const isUserAuthenticated = !!userName;
+
+  console.log("isUserAuthenticated", isUserAuthenticated, userName);
   return (
     <div className="flex justify-between px-5 py-3">
       <div className="flex gap-1">
