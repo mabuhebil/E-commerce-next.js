@@ -1,13 +1,20 @@
 import { nextAuthConfig } from "-/next_auth/nextAuth.config";
-import { getServerSession } from "next-auth";
+import { getServerSession } from "next-auth/next";
+
 import Link from "next/link";
 import React from "react";
 import { FaPhoneAlt } from "react-icons/fa";
 import { IoPersonAdd, IoPersonSharp } from "react-icons/io5";
 import { MdEmail } from "react-icons/md";
+import LogoutButton from "./LogoutButton";
 
 export default async function Header() {
+  console.log("NEXTAUTH_SECRET:", process.env.NEXTAUTH_SECRET);
+  console.log("NEXTAUTH_URL:", process.env.NEXTAUTH_URL);
+
   const res = await getServerSession();
+
+  console.log("sessionRes", res);
   const userName = res?.user?.name;
   const isUserAuthenticated = !!userName;
 
@@ -33,7 +40,7 @@ export default async function Header() {
             <Link href="/profile" className="flex gap-2 items-center">
               <IoPersonAdd /> {userName}
             </Link>
-            <span className="cursor-pointer">Logout</span>
+            <LogoutButton />
           </>
         ) : (
           <>
