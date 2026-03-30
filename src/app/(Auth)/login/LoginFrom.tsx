@@ -9,6 +9,7 @@ import { LoginSchemaObjectType } from "./loginSchemaObjectType";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
+import { Fascinate } from "next/font/google";
 
 export default function LoginFrom() {
   const router = useRouter();
