@@ -16,7 +16,7 @@ export async function addProductToCart(id: string) {
       });
 
       const finalRes = await res.json();
-      console.log("finalRes", finalRes);
+      console.log("finalRes cart", finalRes);
     } catch (error) {
       console.log("error", error);
     }

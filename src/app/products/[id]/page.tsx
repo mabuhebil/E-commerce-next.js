@@ -1,4 +1,5 @@
 import { getSpecificProduct } from "-/api/services/route.services";
+import AddToCartButton from "-/app/_componates/AddToCartButton/AddToCartButton";
 import React from "react";
 import { CiStar } from "react-icons/ci";
 
@@ -28,6 +29,12 @@ export default async function ProductDetails({
             <span>{`(${productDetails?.ratingsQuantity})`}</span>
           </p>
         </div>
+        <AddToCartButton
+          id={productDetails?.id}
+          className="w-full"
+        >
+          <h6>Add to Cart</h6>
+        </AddToCartButton>
       </div>
     </div>
   );

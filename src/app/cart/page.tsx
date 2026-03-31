@@ -1,7 +1,8 @@
-import React from 'react'
+import { getUserCart } from "-/api/services/route.services";
+import React from "react";
 
-export default function Cart() {
-  return (
-    <div>page</div>
-  )
+export default async function Cart() {
+  await getUserCart();
+
+  return <div>page</div>;
 }

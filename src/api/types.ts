@@ -25,3 +25,17 @@ export interface BrandType {
   slug: string;
   image: string;
 }
+
+export interface CartType {
+  _id: string;
+  products: ItemType[];
+  cartOwner: string;
+  totalCartPrice: number;
+}
+
+export interface ItemType {
+  count: number;
+  _id: string;
+  price: number;
+  product: ProductType;
+}

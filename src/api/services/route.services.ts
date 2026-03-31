@@ -1,4 +1,5 @@
-import { CategoryType, ProductType } from "../types";
+import { decodeAuthenticatedUserToken } from "-/app/Utils";
+import { CartType, CategoryType, ProductType } from "../types";
 
 export async function getAllProducts(): Promise<ProductType[] | undefined> {
   try {
@@ -36,5 +37,27 @@ export async function getAllCategories(): Promise<CategoryType[] | undefined> {
     return finalRes.data;
   } catch (error) {
     console.log("error", error);
+  }
+}
+
+export async function getUserCart(): Promise<CartType[] | Error | undefined> {
+  const userToken = await decodeAuthenticatedUserToken();
+
+  if (userToken) {
+    try {
+      const res = await fetch("https://ecommerce.routemisr.com/api/v2/cart", {
+        headers: {
+          token: userToken,
+        },
+      });
+      const finalRes = await res.json();
+
+      console.log("finalResGetCart", finalRes);
+      return finalRes.data;
+    } catch (error) {
+      console.log("error", error);
+    }
+  } else {
+    return new Error("session ended login again");
   }
 }
