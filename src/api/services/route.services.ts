@@ -22,6 +22,7 @@ export async function getSpecificProduct(
     );
     const finalRes = await res.json();
     console.log("spicefc", finalRes);
+    console.log("spicefc", finalRes);
     return finalRes.data;
   } catch (error) {
     console.log("error", error);
