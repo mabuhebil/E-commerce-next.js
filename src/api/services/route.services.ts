@@ -41,7 +41,7 @@ export async function getAllCategories(): Promise<CategoryType[] | undefined> {
   }
 }
 
-export async function getUserCart(): Promise<CartType[] | Error | undefined> {
+export async function getUserCart(): Promise<CartType | Error | undefined> {
   const userToken = await decodeAuthenticatedUserToken();
 
   if (userToken) {

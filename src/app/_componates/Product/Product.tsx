@@ -33,7 +33,7 @@ export default function Product({ product }: ProductProps) {
           )}
         </h2>
 
-        <AddToCartButton  id={product.id} />
+        <AddToCartButton id={product.id}>+</AddToCartButton>
       </div>
     </div>
   );
