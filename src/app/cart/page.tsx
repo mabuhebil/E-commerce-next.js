@@ -21,7 +21,7 @@ export default async function Cart() {
   console.log("products", products);
 
   return (
-    <Table>
+    <Table className="w-6xl m-auto">
       <TableCaption>A list of your Products</TableCaption>
       <TableHeader>
         <TableRow>
@@ -39,7 +39,7 @@ export default async function Cart() {
               <img
                 src={item.product.imageCover}
                 alt={item.product.title}
-                className="w-full"
+                className="w-full max-w-50"
               />
             </TableCell>
             <TableCell>{item.product.title}</TableCell>
