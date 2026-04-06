@@ -14,6 +14,7 @@ import {
   navigationMenuTriggerStyle,
 } from "-/components/ui/navigation-menu";
 import { useSession } from "next-auth/react";
+import { CartContextType, useCart } from "-/app/_context/cartContext";
 
 const components: { title: string; href: string; description: string }[] = [
   {
@@ -57,6 +58,8 @@ export default function NavigationMenuDemo() {
   const session = useSession();
   const userName = session.data?.user?.name;
   const IsUserAuthenticated = session.status === "authenticated";
+
+  const { numberCartItems } = useCart() as CartContextType;
 
   return (
     <NavigationMenu className=" w-full max-w-none justify-between px-20 sticky top-0">
@@ -106,7 +109,10 @@ export default function NavigationMenuDemo() {
           </NavigationMenuItem>
 
           <NavigationMenuItem>
-            <FaShoppingCart />
+            <Link href="/cart">
+              <FaShoppingCart />
+              <span className="text-red-700 text-3xl ">{numberCartItems}</span>
+            </Link>
           </NavigationMenuItem>
 
           <NavigationMenuItem>

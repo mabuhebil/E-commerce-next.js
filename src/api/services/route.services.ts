@@ -41,7 +41,7 @@ export async function getAllCategories(): Promise<CategoryType[] | undefined> {
   }
 }
 
-export async function getUserCart(): Promise<CartType | Error | undefined> {
+export async function getUserCart(): Promise<CartType |  undefined> {
   const userToken = await decodeAuthenticatedUserToken();
 
   if (userToken) {
@@ -59,6 +59,6 @@ export async function getUserCart(): Promise<CartType | Error | undefined> {
       console.log("error", error);
     }
   } else {
-    return new Error("session ended login again");
+    return undefined
   }
 }

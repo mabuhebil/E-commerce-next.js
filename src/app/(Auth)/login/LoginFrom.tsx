@@ -10,9 +10,12 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { Fascinate } from "next/font/google";
+import { getUserCartAfterLogin } from "../register/register.actions";
+import { CartContextType, useCart } from "-/app/_context/cartContext";
 
 export default function LoginFrom() {
   const router = useRouter();
+  const { updateNumberCartItems } = useCart() as CartContextType;
   const { handleSubmit, control } = useForm<LoginSchemaObjectType>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
@@ -30,9 +33,11 @@ export default function LoginFrom() {
         duration: 3000,
         position: "top-right",
       });
-      setTimeout(() => {
-        router.push("/");
-      }, 3000);
+
+      const Res = await getUserCartAfterLogin();
+
+      updateNumberCartItems(Res?.products.length || 0);
+      router.push("/");
     } else {
       toast.error(" Password or Email  wrong", {
         duration: 3000,

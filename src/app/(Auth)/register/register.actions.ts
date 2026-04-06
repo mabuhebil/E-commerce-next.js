@@ -1,5 +1,6 @@
 "use server";
 
+import { getUserCart } from "-/api/services/route.services";
 import { RegisterSchemaObjectType } from "./registerSchemaObjectType";
 
 export async function RegisterAction(data: RegisterSchemaObjectType) {
@@ -17,4 +18,8 @@ export async function RegisterAction(data: RegisterSchemaObjectType) {
   } catch (error) {
     console.log("error", error);
   }
+}
+
+export async function getUserCartAfterLogin() {
+  return await getUserCart();
 }
