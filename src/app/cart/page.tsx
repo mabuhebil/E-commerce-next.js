@@ -12,10 +12,14 @@ import {
   TableRow,
 } from "-/components/ui/table";
 import { Button } from "-/components/ui/button";
+import RemoveProductButton from "./RemoveProductButton";
 
 export default async function Cart() {
   const cartData = await getUserCart();
 
+  if (!cartData) {
+    return new Error(" UserCart not found");
+  }
   const { totalCartPrice, products } = cartData as CartType;
 
   console.log("products", products);
@@ -44,9 +48,14 @@ export default async function Cart() {
             </TableCell>
             <TableCell>{item.product.title}</TableCell>
             <TableCell>
-              <Button>+</Button>
-              {item.count}
-              <Button>-</Button>
+              <div>
+                <div className="flex gap-2 items-center justify-center">
+                  <Button variant="outline">-</Button>
+                  {item.count}
+                  <Button variant="outline">+</Button>
+                </div>
+                <RemoveProductButton id={item.product.id} />
+              </div>
             </TableCell>
             <TableCell className="text-right">{item.price}</TableCell>
           </TableRow>

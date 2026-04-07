@@ -16,7 +16,37 @@ export async function addProductToCart(id: string) {
       });
 
       const finalRes = await res.json();
-      console.log("finalRes cart", finalRes);
+
+      if (res.ok) {
+        return finalRes.numOfCartItems;
+      } else {
+        return null;
+      }
+    } catch (error) {
+      console.log("error", error);
+    }
+  } else {
+    return new Error(" session ended");
+  }
+}
+
+export async function DeleteItem(id: string) {
+  const userToken = await decodeAuthenticatedUserToken();
+
+  if (userToken) {
+    try {
+      const res = await fetch(
+        `https://ecommerce.routemisr.com/api/v2/cart/{{${id}}`,
+        {
+          method: "DELETE",
+          headers: { token: userToken },
+        },
+      );
+
+      if (res.ok) {
+        const finalRes = await res.json();
+        console.log("DElete finalRes", finalRes);
+      }
     } catch (error) {
       console.log("error", error);
     }

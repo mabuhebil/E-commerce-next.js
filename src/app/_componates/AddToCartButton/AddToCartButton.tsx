@@ -1,8 +1,10 @@
 "use client";
 
+import { CartContextType, useCart } from "-/app/_context/cartContext";
 import { addProductToCart } from "-/app/cart/cart.actions";
 import { Button } from "-/components/ui/button";
 import React, { MouseEvent, ReactNode } from "react";
+import { toast } from "sonner";
 
 interface addToCartButtonInterface {
   id: string;
@@ -15,9 +17,23 @@ export default function AddToCartButton({
   className = "",
   children,
 }: addToCartButtonInterface) {
+  const { updateNumberCartItems } = useCart() as CartContextType;
   async function handleClick(e: MouseEvent) {
     e.preventDefault();
-    await addProductToCart(id);
+    const numOfCartItems = await addProductToCart(id);
+
+    console.log("numOfCartItems", numOfCartItems);
+
+    if (numOfCartItems != null) {
+      updateNumberCartItems(numOfCartItems);
+      toast.success("Add To Cart is successful", {
+        position: "top-right",
+      });
+    } else {
+      toast.error("Add To Cart is faild", {
+        position: "top-right",
+      });
+    }
   }
 
   return (
