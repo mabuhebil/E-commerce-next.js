@@ -13,6 +13,7 @@ import {
 } from "-/components/ui/table";
 import { Button } from "-/components/ui/button";
 import RemoveProductButton from "./RemoveProductButton";
+import AddCartButton from "./AddCartButton";
 
 export default async function Cart() {
   const cartData = await getUserCart();
@@ -50,9 +51,9 @@ export default async function Cart() {
             <TableCell>
               <div>
                 <div className="flex gap-2 items-center justify-center">
-                  <Button variant="outline">-</Button>
+                  <AddCartButton isAdd={false} newCount={item.count - 1}  id={item.product.id} />
                   {item.count}
-                  <Button variant="outline">+</Button>
+                  <AddCartButton isAdd newCount={item.count + 1}  id={item.product.id}/>
                 </div>
                 <RemoveProductButton id={item.product.id} />
               </div>
