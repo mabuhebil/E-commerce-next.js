@@ -90,3 +90,27 @@ export async function EditingCount(id: string, newCount: number) {
     return new Error(" session ended");
   }
 }
+
+export async function paymentFun(id: string, PaymentObj) {
+  const userToken = await decodeAuthenticatedUserToken();
+
+  if (userToken) {
+    try {
+      const res = await fetch(
+        `https://ecommerce.routemisr.com/api/v2/orders/${id}`,
+        {
+          method: "POST",
+          headers: { token: userToken, "Content-Type": "application/json" },
+          body: JSON.stringify(PaymentObj),
+        },
+      );
+      const finalRes = await res.json();
+
+      console.log("PaymentResponse", finalRes);
+    } catch (error) {
+      console.log("error", error);
+    }
+  } else {
+    return new Error(" session ended");
+  }
+}
