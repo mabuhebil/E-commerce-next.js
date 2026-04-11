@@ -39,3 +39,12 @@ export interface ItemType {
   price: number;
   product: ProductType;
 }
+
+export interface PayType {
+  shippingAddress: {
+    details: string;
+    phone: string;
+    city: string;
+    postalCode: string;
+  };
+}
