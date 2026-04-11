@@ -2,10 +2,13 @@
 
 import { Button } from "-/components/ui/button";
 import { useRef } from "react";
-import { paymentFun } from "../cart.actions";
-import { useParams } from "next/navigation";
+import { checkoutOrder, paymentFun } from "../cart.actions";
+import { useParams, useRouter } from "next/navigation";
 import { Label } from "-/components/ui/label";
 import { Input } from "-/components/ui/input";
+import { toast } from "sonner";
+import { CartContextType, useCart } from "-/app/_context/cartContext";
+import { PayType } from "-/api/types";
 
 // {
 //   "shippingAddress": {
@@ -16,6 +19,8 @@ import { Input } from "-/components/ui/input";
 //   }
 // }
 export default function PaymentPage() {
+  const { updateNumberCartItems } = useCart() as CartContextType;
+  const router = useRouter();
   const { id } = useParams();
   const DetailsRev = useRef<HTMLInputElement>(null);
   const PhoneRev = useRef<HTMLInputElement>(null);
@@ -32,7 +37,33 @@ export default function PaymentPage() {
       },
     };
 
-    await paymentFun(id?.toString() || "", PaymentObj);
+    const isPayed = await paymentFun(
+      id?.toString() || "",
+      PaymentObj as PayType,
+    );
+
+    if (isPayed) {
+      toast.success("User Pay Successfuly", { position: "top-right" });
+      updateNumberCartItems(0);
+      router.push("/");
+    } else {
+      toast.error("User Pay is faild", { position: "top-right" });
+    }
+  }
+
+  async function handelCheckoutOrder() {
+    const PaymentObj = {
+      shippingAddress: {
+        details: DetailsRev.current?.value,
+        phone: PhoneRev.current?.value,
+        city: CityRev.current?.value,
+      },
+    };
+    const link = await checkoutOrder(id?.toString() || "", PaymentObj);
+
+    if (link) {
+      window.open(link, "_self");
+    }
   }
 
   return (
@@ -46,7 +77,8 @@ export default function PaymentPage() {
       <Label>Postal Code</Label>
       <Input type="text" ref={PostalCodeRev} />
 
-      <Button onClick={handelPaymentFun}>Pay Now</Button>
+      <Button onClick={handelPaymentFun}>Create cash order</Button>
+      <Button onClick={handelCheckoutOrder}>Create online order</Button>
     </div>
   );
 }

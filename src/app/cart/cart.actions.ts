@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { decodeAuthenticatedUserToken } from "../Utils";
 import { json } from "zod";
+import { PayType } from "-/api/types";
 
 export async function addProductToCart(id: string) {
   const bodyObj = { productId: id };
@@ -91,7 +92,7 @@ export async function EditingCount(id: string, newCount: number) {
   }
 }
 
-export async function paymentFun(id: string, PaymentObj) {
+export async function paymentFun(id: string, PaymentObj: PayType) {
   const userToken = await decodeAuthenticatedUserToken();
 
   if (userToken) {
@@ -107,6 +108,39 @@ export async function paymentFun(id: string, PaymentObj) {
       const finalRes = await res.json();
 
       console.log("PaymentResponse", finalRes);
+
+      if (res.ok) {
+        return true;
+      }
+    } catch (error) {
+      console.log("error", error);
+    }
+  } else {
+    return new Error(" session ended");
+  }
+}
+
+export async function checkoutOrder(id: string, PaymentObj: PayType) {
+  const userToken = await decodeAuthenticatedUserToken();
+
+  if (userToken) {
+    try {
+      const res = await fetch(
+        `https://ecommerce.routemisr.com/api/v1/orders/checkout-session/${id}?url=http://localhost:3000`,
+        {
+          method: "POST",
+          headers: { token: userToken, "Content-Type": "application/json" },
+          body: JSON.stringify(PaymentObj),
+        },
+      );
+
+      if (res.ok) {
+        const finalRes = await res.json();
+        console.log("CheckOut order", finalRes);
+        return finalRes.session.url;
+      }else{
+        return false
+      }
     } catch (error) {
       console.log("error", error);
     }
