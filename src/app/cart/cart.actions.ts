@@ -33,6 +33,65 @@ export async function addProductToCart(id: string) {
   }
 }
 
+export async function addProductToWishlist(id: string) {
+  const bodyObj = { productId: id };
+
+  const userToken = await decodeAuthenticatedUserToken();
+
+  if (userToken) {
+    try {
+      const res = await fetch(
+        "https://ecommerce.routemisr.com/api/v1/wishlist",
+        {
+          method: "post",
+          headers: { token: userToken, "Content-Type": "application/json" },
+          body: JSON.stringify(bodyObj),
+        },
+      );
+
+      const finalWishlist = await res.json();
+
+      if (res.ok) {
+        return finalWishlist;
+      } else {
+        return null;
+      }
+    } catch (error) {
+      console.log("error", error);
+    }
+  } else {
+    return new Error(" session ended");
+  }
+}
+
+export async function DeleteWishListItem(id: string) {
+  const userToken = await decodeAuthenticatedUserToken();
+
+  if (userToken) {
+    try {
+      const res = await fetch(
+        `https://ecommerce.routemisr.com/api/v1/wishlist/${id}`,
+        {
+          method: "DELETE",
+          headers: { token: userToken },
+        },
+      );
+
+      if (res.ok) {
+        const result = await res.json();
+        return result
+       
+      } else {
+        return null;
+      }
+    } catch (error) {
+      console.log("error", error);
+    }
+  } else {
+    return new Error(" session ended");
+  }
+}
+
 export async function DeleteItem(id: string) {
   const userToken = await decodeAuthenticatedUserToken();
 
@@ -138,8 +197,8 @@ export async function checkoutOrder(id: string, PaymentObj: PayType) {
         const finalRes = await res.json();
         console.log("CheckOut order", finalRes);
         return finalRes.session.url;
-      }else{
-        return false
+      } else {
+        return false;
       }
     } catch (error) {
       console.log("error", error);

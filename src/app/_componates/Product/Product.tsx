@@ -3,11 +3,18 @@ import { ProductProps } from "./Product.typs";
 import { CiStar } from "react-icons/ci";
 import { Button } from "-/components/ui/button";
 import AddToCartButton from "../AddToCartButton/AddToCartButton";
+import { CiHeart } from "react-icons/ci";
+import AddToWishlistIcon from "../AddToWishlistIcon/AddToWishlistIcon";
 
+
+
+//mohamed987@gmail.com
+//mohamed987
 export default function Product({ product }: ProductProps) {
   return (
-    <div className="border rounded-lg p-2" key={product.id}>
+    <div className="border rounded-lg p-2 relative" key={product.id}>
       <img src={product.imageCover} alt={product.title} />
+      <AddToWishlistIcon id={product.id} />
       <div className="text-gray-500">{product.category.name}</div>
       <h2 className="text-xl font-bold">
         {product.title.split(" ", 2).join(" ")}

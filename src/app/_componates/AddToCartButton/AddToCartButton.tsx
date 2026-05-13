@@ -22,7 +22,7 @@ export default function AddToCartButton({
     e.preventDefault();
     const numOfCartItems = await addProductToCart(id);
 
-    console.log("numOfCartItems", numOfCartItems);
+
 
     if (numOfCartItems != null) {
       updateNumberCartItems(numOfCartItems);
