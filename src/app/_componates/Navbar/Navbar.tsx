@@ -105,7 +105,9 @@ export default function NavigationMenuDemo() {
 
         <NavigationMenuList className="hidden md:flex gap-2">
           <NavigationMenuItem>
-            <FaHeart />
+            <Link href="/wishlist">
+              <FaHeart />
+            </Link>
           </NavigationMenuItem>
 
           <NavigationMenuItem>

@@ -67,6 +67,7 @@ export async function addProductToWishlist(id: string) {
 export async function DeleteWishListItem(id: string) {
   const userToken = await decodeAuthenticatedUserToken();
 
+  console.log("userToken",userToken);
   if (userToken) {
     try {
       const res = await fetch(
@@ -79,8 +80,7 @@ export async function DeleteWishListItem(id: string) {
 
       if (res.ok) {
         const result = await res.json();
-        return result
-       
+        return result;
       } else {
         return null;
       }
